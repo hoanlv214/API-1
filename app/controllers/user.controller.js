@@ -145,3 +145,5 @@ exports.login_user = function (rep, res) {
 
   }
 }
+//api.sign_out
+
