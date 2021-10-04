@@ -20,14 +20,34 @@ User.get_all = function(result){
         }
     });
 }
+/*
+User.getByPhoneNumber =function(phoneNumber,result)
+{ 
+    console.log(phoneNumber);
+    db.query("SELECT * FROM user WHERE sdt_user = ?",phoneNumber,function(err,user)
+    { 
+       if(err||user.length==0)
+       { 
+           result(null);
+       }
+       else{
 
+       }
+    });
+
+}
+*/
+
+// khai bao funsion
 User.Create = function(data,result){
    db.query("INSERT INTO user SET ?",data,function(err,user){
        if(err)
        {
+           console.log('Error create user', err);
            return(null);
        }
        else{
+        console.log('Create user successfully');
            result({id:user.insertId,...data});
        }
     });
