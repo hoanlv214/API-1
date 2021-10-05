@@ -8,7 +8,8 @@ module.exports = function(router)
    router.post('/user/signup',userController.add_user);
    // API login
    router.post('/user/login',userController.login_user);
-   //API sign out.
+   //API logout.
+   router.post('/user/logout',userController.logout_user);
    //https://www.youtube.com/watch?v=mqpNSBiuIVw
    // hoc về sinh token
    //git push -u

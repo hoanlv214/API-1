@@ -1,30 +1,12 @@
 var User = require('../models/user.model');
+
 var jwt = require('jsonwebtoken');
-
-
 exports.get_list = function (rep, res) {
   User.get_all(function (data) {
     // res.send({result:data});
     res.send({ result: data });
   });
 }
-
-// body-parser
-// sigin
-/*
-exports.add_user = function(rep,res){
-    // chuyển data xuống thành mmodel để nó cho
-    // vào database
-    //req là nhận về dữ lữ từ giao diện form
-  var data=rep.body;
-  console.log(data);
-  User.Create(data,function(response){
-     res.send({result:response});
-    });
-}
-*/
-// add user
-
 exports.add_user = function (rep, res) {
   var phonenumber = rep.body.sdt_user;
   var password = rep.body.pass_user;
@@ -163,26 +145,62 @@ exports.login_user = function (rep, res) {
     }
   }
 }
-//api.sign_out
+//api logout_user
+exports.logout_user = function (rep, res) {
+  //const data = rep.body;
+  var token = rep.body.token;
+  console.log("da lay duoc token" + rep.body.token);
+  User.checkToken(token, (err, user) => {
+    if (err) {
+      res.send(JSON.stringify({
+        Code: 1001,
+        Message: 'khong the kết nối với database'
+      }));
+    } else {
+      if (user.length !== 0) {
+       User.createToken(user[0].sdt_user,"", (err, response) => {
+          console.log("check token with phomenumber" + rep.body.sdt_user);
+          if (err) {
+            res.send(JSON.stringify({
+              code: '1001',
+              message: 'Can not connect to DB'
+            }))
+          } else {
+            res.send(JSON.stringify({
+              Code: 1000,
+              Message: 'ok đăng xuất thành công',
+              //Data: user[0],
+              // Token: accessToken
+            }));
+          }
+        })
+      }
+      else {
+        res.send(JSON.stringify({
+          Code: "node cotde",
+          Message: 'Phiên đăng nhập đã hết hạn',
+          // Token: accessToken
+        }));
+      }
 
+    }
+  })
+}
+
+// body-parser
+// sigin
 /*
-            User.updateToken(user.sdt_user, accessToken, (err, user) => {
-              if (err) {
-                res.send(JSON.stringify({
-                  code: '1001',
-                  message: 'Can not connect to DB'
-                }))
-              } else {
+exports.add_user = function(rep,res){
+    // chuyển data xuống thành mmodel để nó cho
+    // vào database
+    //req là nhận về dữ lữ từ giao diện form
+  var data=rep.body;
+  console.log(data);
+  User.Create(data,function(response){
+     res.send({result:response});
+    });
+}
+*/
+// add user
 
-                res.send(JSON.stringify({
-                  Code: 1000,
-                  Message: 'ok đăng nhập thành công',
-                  Data: user,
-                  Token: accessToken
-
-                }));
-
-              }
-            })
-            */
 

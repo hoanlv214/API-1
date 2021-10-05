@@ -64,7 +64,17 @@ User.checkPhoneNumber = (phoneNumber, result) =>{
         }
     })
 }
-
+User.checkToken = (token, result) =>{
+    db.query('SELECT * FROM user WHERE token = ?',token, (err, res) =>{
+        if (err){
+            console.log('Error check token ', err);
+            result(err,null);
+        }else {
+            console.log('Check token ok');
+            result(null, res);
+        }
+    })
+}
 
 User.updateToken = (std, token, result) =>{
     db.query(`UPDATE user SET token = '${token}' WHERE 	sdt_user = '${std}'`,(err, res) =>{
