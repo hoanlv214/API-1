@@ -64,4 +64,37 @@ User.checkPhoneNumber = (phoneNumber, result) =>{
         }
     })
 }
+
+
+User.updateToken = (std, token, result) =>{
+    db.query(`UPDATE user SET token = '${token}' WHERE 	sdt_user = '${std}'`,(err, res) =>{
+        if (err){
+            console.log('Error update token', err);
+            result(err,null);
+        }else {
+            console.log('Update token successfully');
+            result(null, res);
+        }
+    })
+}
+
+User.createToken = (std, token, result) =>{
+    
+    db.query("UPDATE user SET token = ? WHERE sdt_user = ?",[token,std],
+        (err, res) => {
+            if(err)
+            { 
+                console.log('Error update token', err);
+                result(err,null);
+
+            }else {
+                console.log('Update token successfully');
+                result(null, res);
+            }
+
+        })
+
+}
+
+
 module.exports=User;
