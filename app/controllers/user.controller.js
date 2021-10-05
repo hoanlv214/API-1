@@ -1,4 +1,8 @@
 var User = require('../models/user.model');
+var jwt  = require('jsonwebtoken');
+//import dotenv from 'dotenv';
+//dotenv.config();
+
 
 exports.get_list = function (rep, res) {
   User.get_all(function (data) {
@@ -87,7 +91,7 @@ exports.add_user = function (rep, res) {
 
 // login user
 exports.login_user = function (rep, res) {
-
+  const data =rep.body;
   var phonenumber = rep.body.sdt_user;
   var password = rep.body.pass_user;
   if (phonenumber === null || password === null || phonenumber === '' || password === '' || phonenumber === undefined || password === undefined) {
@@ -124,12 +128,19 @@ exports.login_user = function (rep, res) {
         } else {
           if (user.length !== 0) {
             console.log(user);
-
+          const accessToken=jwt.sign({
+            iss:user.pass_user,
+            sub:user.id_user,
+            iat: new Date().getTime(),
+            exp: new Date().setDate(new Date().getTime()+1)
+          },'NodejsApiAuthentication')
+         
             res.send(JSON.stringify({
               Code: 1000,
               Message: 'ok đăng nhập thành công',
-              Data: user
-
+              Data: user,
+              Token:accessToken
+              
             }));
           } else {
             res.send(JSON.stringify({

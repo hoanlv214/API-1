@@ -9,7 +9,8 @@ module.exports = function(router)
    // API login
    router.post('/user/login',userController.login_user);
    //API sign out.
-   // https://www.youtube.com/watch?v=LxeYH4D1YAs
+   //https://www.youtube.com/watch?v=mqpNSBiuIVw
    // hoc về sinh token
+   //git push -u
    // Post
 }
